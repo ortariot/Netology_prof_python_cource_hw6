@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from selenium import webdriver
 import time
 
@@ -15,5 +16,3 @@ enter_button.click()
 
 # search_box.send_keys('ChromeDriver')
 # search_box.submit()
-
-# driver.quit()
