@@ -31,8 +31,6 @@
 #  которая уже существует.;
 
 import sys
-import pytest
-import unittest
 
 HELP = '''Список доступных команд:
 * p – people – команда, которая спросит номер документа и выведет\
@@ -52,6 +50,9 @@ HELP = '''Список доступных команд:
 * q - выход из программы
 '''
 
+TST = 'тип'
+NST = 'имя пользователя'
+DST = 'документ'
 
 documents = [{"type": "passport", "number": "2207 876234",
               "name": "Василий Гупкин"
@@ -81,9 +82,9 @@ def get_id(doc_base, doc_num):
 # name return
 def get_person(doc_base, doc_num):
     id = get_id(doc_base, doc_num)
-    return (f"Документ {doc_num} зарегестрирован на имя"
+    return (f"{DST} {doc_num} зарегестрирован на имя "
             f"{doc_base[id]['name']}"
-            ) if id is not None else f"Документ с номером {doc_num} не найден"
+            ) if id is not None else f"{DST} с номером {doc_num} не найден"
 
 
 # dir - key in directories
@@ -97,9 +98,9 @@ def get_dir(shelf_base, doc_num):
 # shelf return
 def get_shelf(shelf_base, doc_num):
     shelf_num = get_dir(shelf_base, doc_num)
-    return (f"Документ находится на полке - "
+    return (f"{DST} находится на полке - "
             f"{shelf_num}"
-            ) if shelf_num is not None else (f"Документ с номером {doc_num}"
+            ) if shelf_num is not None else (f"{DST} с номером {doc_num}"
                                              f" на полках не найден"
                                              )
 
@@ -118,7 +119,7 @@ def add_doc(doc_base, dir_base, type_doc, doc_num, name_doc, shelf_num):
                          }
                         )
         add_num_to_dir(dir_base, shelf_num, doc_num)
-        return (f"Добавлен новый документ {doc_num},"
+        return (f"Добавлен новый {DST} {doc_num}, "
                 f"он будет находится на полке {shelf_num}"
                 )
     else:
@@ -137,15 +138,15 @@ def remove_num_from_shelf(dir_base, doc_num, dir=None):
 def remove_doc(doc_base, dir_base, doc_num):
     id = get_id(doc_base, doc_num)
     if id is None:
-        return f"Документ с номером {doc_num} не найден"
+        return f"{DST} с номером {doc_num} не найден"
 
     dir = get_dir(dir_base, doc_num)
     if dir is None:
-        return f"Документ с номером {doc_num} не найден на полках"
+        return f"{DST}с номером {doc_num} не найден на полках"
 
     doc_base.pop(id)
     remove_num_from_shelf(dir_base, doc_num, dir)
-    return f"Документ с номером {doc_num} удалён"
+    return f"{DST} с номером {doc_num} удалён"
 
 
 # checking shelf existence
@@ -157,15 +158,15 @@ def shelf_check(dir_base, num_shelf):
 def move(dir_base, doc_num, shelf_num):
     dir = get_dir(dir_base, doc_num)
     if dir == shelf_num:
-        return (f"Документ с номером {doc_num}"
+        return (f"{DST} с номером {doc_num}"
                 f" уже находится на полке {shelf_num}"
                 )
     elif dir is None:
-        return f"Документ с номером {doc_num} не найден на полках"
+        return f"{DST} с номером {doc_num} не найден на полках"
     if shelf_check(dir_base, shelf_num) is True:
         remove_num_from_shelf(dir_base, doc_num, dir)
         add_num_to_dir(dir_base, shelf_num, doc_num)
-        return f"Документ с номером {doc_num} перемещён на полку {shelf_num}"
+        return f"{DST} с номером {doc_num} перемещён на полку {shelf_num}"
     return f"Вы указали несуществующую полку {shelf_num}"
 
 
@@ -201,20 +202,20 @@ def enter_num(purpose=False):
 def enter_text(purpose=False):
     while True:
         text = input((f"Введите "
-                      f"{'тип' if purpose is True else 'имя пользователя'}"
+                      f"{TST if purpose is True else NST}"
                       f" документа "
                       )
-                    )
+                     )
         if text:
             if not text.isdigit():
                 break
             else:
-                print((f"{'Тип должен' if purpose is True else 'Имя пользователя должно'}"
+                print((f"{'тип должен' if purpose is True else NST}"
                        f" стостоять из букв алфавита, вы ввели"
                        f" цифровой номер {text}")
                       )
         else:
-            print((f"{'Тип' if purpose is True else 'Имя пользователя'}"
+            print((f"{TST if purpose is True else NST}"
                    f" не может быть пустым"))
     return text
 
@@ -274,37 +275,6 @@ def selector(cmd):
     return out()
 
 
-def assert_test():
-    assert get_person(documents, "2207 876234") == "Документ 2207 876234 зарегестрирован на имя Василий Гупкин"
-
-
-class AddTests(unittest.TestCase):
-    # def assert_test(self):
-    #     assert  6 == get_person(documents, "2207 876234") #== "Документ 2207 876234 зарегестрирован на имя Василий Гупкин"
-    def test_vvv(self):
-        self.assertEqual(3, 2+1)
-
-    def test_bbb(self):
-        self.assertEqual(0, 2+1)
-
-
-
-
 if __name__ == '__main__':
-    # main()
-    # assert_test()
-    test = AddTests()
-    test.test_vvv()
-    # print(get_person(documents, "2207 876234"))
-
-
-# documents = [{"type": "passport", "number": "2207 876234",
-#               "name": "Василий Гупкин"
-#               },
-#              {"type": "invoice", "number": "11-2",
-#               "name": "Геннадий Покемонов"
-#               },
-#              {"type": "insurance", "number": "10006",
-#               "name": "Аристарх Павлов"
-#               }
-#              ]
+    main()
+    print(get_person(documents, "2207 876234"))
