@@ -1,6 +1,6 @@
 from selenium import webdriver
 import time
-# import pytest
+import pytest
 
 
 class TestYaAuth:
