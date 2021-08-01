@@ -2,10 +2,11 @@ from shelf_case import get_person, get_shelf, add_doc,\
                        remove_doc, move, add_shelf, get_dir,\
                        documents, directories
 
-import unittest
+from unittest import TestCase
+from unittest.mock import patch
 
 
-class ShelfTests(unittest.TestCase):
+class ShelfTests(TestCase):
 
     def test_get_person(self):
         out = 'документ 2207 876234 зарегестрирован на имя Василий Гупкин'
@@ -55,3 +56,9 @@ class ShelfTests(unittest.TestCase):
         self.assertEqual(add_shelf(directories, '4'), out_ok)
         self.assertEqual(add_shelf(directories, '1'), out_fail)
         self.assertIn('4', directories)
+
+    @patch('shelf_case.selector',
+           return_value=get_person(documents, '2207 876234'))
+    def test_selector_shelf(self, selector):
+        out = 'документ 2207 876234 зарегестрирован на имя Василий Гупкин'
+        self.assertEqual(selector('p'), out)

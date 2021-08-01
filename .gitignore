@@ -1,2 +1,4 @@
 /env
 .vscode/
+.pytest_cashe
+/__pycache__
