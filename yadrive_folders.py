@@ -33,7 +33,7 @@ class YaDrive():
 
 
 if __name__ == '__main__':
-    token = 'AQAAAAAKRLFpAADLW2fzaHlsdk-GmbND08s4yJE'
+    token = 'you token'
     disk = YaDrive(token)
     d = disk.create_new_folder('/folder_One')
 

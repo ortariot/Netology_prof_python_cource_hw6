@@ -3,7 +3,7 @@ from yadrive_folders import YaDrive
 
 
 class TestYaDrive():
-    token = 'AQAAAAAKRLFpAADLW2fzaHlsdk-GmbND08s4yJE'
+    token = 'you token'
     disk = YaDrive(token)
 
     def setup_class(cls):
